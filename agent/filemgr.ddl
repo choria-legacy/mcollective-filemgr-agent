@@ -9,34 +9,34 @@ metadata    :name        => "filemgr",
 
 action "touch", :description => "Creates an empty file or touch it's timestamp" do
     input :file,
-        :prompt      => "File",
-        :description => "File to touch",
-        :type        => :string,
-        :validation  => '^.+$',
-        :optional    => true,
-        :maxlength    => 256
+          :prompt      => "File",
+          :description => "File to touch",
+          :type        => :string,
+          :validation  => '^.+$',
+          :optional    => true,
+          :maxlength    => 256
 end
 
 action "remove", :description => "Removes a file" do
     input :file,
-        :prompt      => "File",
-        :description => "File to remove",
-        :type        => :string,
-        :validation  => '^.+$',
-        :optional    => true,
-        :maxlength    => 256
+          :prompt      => "File",
+          :description => "File to remove",
+          :type        => :string,
+          :validation  => '^.+$',
+          :optional    => true,
+          :maxlength    => 256
 end
 
 action "status", :description => "Basic information about a file" do
     display :always
 
     input :file,
-        :prompt      => "File",
-        :description => "File to get information for",
-        :type        => :string,
-        :validation  => '^.+$',
-        :optional    => true,
-        :maxlength    => 256
+          :prompt      => "File",
+          :description => "File to get information for",
+          :type        => :string,
+          :validation  => '^.+$',
+          :optional    => true,
+          :maxlength    => 256
 
     output :name,
            :description => "File name",

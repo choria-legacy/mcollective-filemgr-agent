@@ -35,7 +35,7 @@ class MCollective::Application::Filemgr<MCollective::Application
         printrpc mc.status(:file => configuration[:file])
       else
         mc.status(:file => configuration[:file]).each do |resp|
-          printf("%-40s: %s\n", resp[:sender], resp[:data][:output] || resp[:statusmsg] )
+          printf("%-40s: %s\n", resp[:sender], resp[:data][:output] || resp[:statusmsg])
         end
       end
 

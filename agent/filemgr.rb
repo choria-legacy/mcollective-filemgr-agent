@@ -10,14 +10,6 @@ module MCollective
     # it will default to the file /var/run/mcollective.plugin.filemgr.touch
     # or whatever is specified in the plugin.filemgr.touch_file setting
     class Filemgr<RPC::Agent
-      metadata    :name        => "filemgr",
-                  :description => "File Manager",
-                  :author      => "Mike Pountney <mike.pountney@gmail.com>",
-                  :license     => "Apache 2",
-                  :version     => "1.0",
-                  :url         => "http://www.puppetlabs.com/mcollective",
-                  :timeout     => 5
-
       # Basic file touch action - create (empty) file if it doesn't exist,
       # update last mod time otherwise.
       # useful for checking if mcollective is operational, via NRPE or similar.
@@ -58,7 +50,6 @@ module MCollective
         reply[:uid] = 0
         reply[:gid] = 0
 
-
         if File.exists?(file)
           logger.debug("Asked for status of '#{file}' - it is present")
           reply[:output] = "present"
@@ -95,18 +86,18 @@ module MCollective
 
       def remove
         file = get_filename
-        if ! File.exists?(file)
+        unless File.exists?(file)
           logger.debug("Asked to remove file '#{file}', but it does not exist")
           reply.statusmsg = "OK"
-        end
-
-        begin
-          FileUtils.rm(file)
-          logger.debug("Removed file '#{file}'")
-          reply.statusmsg = "OK"
-        rescue
-          logger.warn("Could not remove file '#{file}'")
-          reply.fail! "Could not remove file '#{file}'"
+        else
+          begin
+            FileUtils.rm(file)
+            logger.debug("Removed file '#{file}'")
+            reply.statusmsg = "OK"
+          rescue
+            logger.warn("Could not remove file '#{file}'")
+            reply.fail! "Could not remove file '#{file}'"
+          end
         end
       end
 
