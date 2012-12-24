@@ -21,7 +21,7 @@ class MCollective::Application::Filemgr<MCollective::Application
   end
 
   def main
-    mc = rpcclient("filemgr", :options => options)
+    mc = rpcclient("filemgr")
 
     case configuration[:command]
     when "remove"
@@ -40,12 +40,12 @@ class MCollective::Application::Filemgr<MCollective::Application
       end
 
     else
-      mc.disconnect
       puts "Valid commands are 'touch', 'status', and 'remove'"
       exit 1
     end
 
-    mc.disconnect
     printrpcstats
+
+    halt mc.stats
   end
 end

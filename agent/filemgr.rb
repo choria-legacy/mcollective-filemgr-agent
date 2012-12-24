@@ -10,9 +10,6 @@ module MCollective
     # it will default to the file /var/run/mcollective.plugin.filemgr.touch
     # or whatever is specified in the plugin.filemgr.touch_file setting
     class Filemgr<RPC::Agent
-      # Basic file touch action - create (empty) file if it doesn't exist,
-      # update last mod time otherwise.
-      # useful for checking if mcollective is operational, via NRPE or similar.
       action "touch" do
         touch
       end
@@ -27,7 +24,6 @@ module MCollective
         status
       end
 
-      private
       def get_filename
         request[:file] || config.pluginconf["filemgr.touch_file"] || "/var/run/mcollective.plugin.filemgr.touch"
       end
@@ -51,7 +47,7 @@ module MCollective
         reply[:gid] = 0
 
         if File.exists?(file)
-          logger.debug("Asked for status of '#{file}' - it is present")
+          Log.debug("Asked for status of '#{file}' - it is present")
           reply[:output] = "present"
           reply[:present] = 1
 
@@ -79,36 +75,38 @@ module MCollective
           reply[:type] = "chardev" if stat.chardev?
           reply[:type] = "blockdev" if stat.blockdev?
         else
-          logger.debug("Asked for status of '#{file}' - it is not present")
+          Log.debug("Asked for status of '#{file}' - it is not present")
           reply.fail! "#{file} does not exist"
         end
       end
 
       def remove
         file = get_filename
+
         unless File.exists?(file)
-          logger.debug("Asked to remove file '#{file}', but it does not exist")
-          reply.statusmsg = "OK"
+          Log.debug("Asked to remove file '#{file}', but it does not exist")
+          reply.fail! "Could not remove file '#{file}' - it is not present"
         else
           begin
             FileUtils.rm(file)
-            logger.debug("Removed file '#{file}'")
+            Log.debug("Removed file '#{file}'")
             reply.statusmsg = "OK"
-          rescue
-            logger.warn("Could not remove file '#{file}'")
-            reply.fail! "Could not remove file '#{file}'"
+          rescue Exception => e
+            Log.warn("Could not remove file '#{file}': #{e.class}: #{e}")
+            reply.fail! "Could not remove file '#{file}': #{e.class}: #{e}"
           end
         end
       end
 
       def touch
         file = get_filename
+
         begin
           FileUtils.touch(file)
-          logger.debug("Touched file '#{file}'")
-        rescue
-          logger.warn("Could not touch file '#{file}'")
-          reply.fail! "Could not touch file '#{file}'"
+          Log.debug("Touched file '#{file}'")
+        rescue Exception => e
+          Log.warn("Could not touch file '#{file}': #{e.class}: #{e}")
+          reply.fail! "Could not touch file '#{file}': #{e.class}: #{e}"
         end
       end
     end

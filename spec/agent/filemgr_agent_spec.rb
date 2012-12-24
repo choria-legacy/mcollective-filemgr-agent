@@ -42,7 +42,7 @@ module MCollective
         it "should not try to remove a file that isn't present" do
           File.expects(:exists?).with("/tmp/foo").returns(false)
           result = @agent.call(:remove, :file => "/tmp/foo")
-          result.should be_successful
+          result.should be_aborted_error
         end
 
         it "should fail if it can't remove the file" do

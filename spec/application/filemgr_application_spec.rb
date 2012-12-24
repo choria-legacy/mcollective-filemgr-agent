@@ -31,11 +31,13 @@ module MCollective
       end
 
       describe '#main' do
-        let(:rpcclient){mock}
+        let(:rpcclient) { mock }
 
         before do
           @app.stubs(:rpcclient).returns(rpcclient)
           rpcclient.stubs(:disconnect)
+          rpcclient.stubs(:stats).returns({})
+          @app.stubs(:halt)
           @app.stubs(:printrpcstats)
         end
 

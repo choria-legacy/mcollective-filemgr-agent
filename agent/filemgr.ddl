@@ -1,11 +1,12 @@
 metadata    :name        => "filemgr",
             :description => "File Manager",
             :author      => "Mike Pountney <mike.pountney@gmail.com>",
-            :license     => "Apache 2",
-            :version     => "0.3",
+            :license     => "ASL 2.0",
+            :version     => "1.0.0",
             :url         => "http://www.puppetlabs.com/mcollective",
             :timeout     => 5
 
+requires :mcollective => "2.2.1"
 
 action "touch", :description => "Creates an empty file or touch it's timestamp" do
     input :file,

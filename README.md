@@ -16,7 +16,7 @@ Determining the amount of hosts matching filter for 2 seconds .... 1
  * [ ============================================================> ] 1 / 1
 
 
-some.node:
+dev1.example.com:
    Modification time: 1289650072
          Change time: Wed Nov 17 00:29:17 +0000 2010
          Change time: 1289953757
