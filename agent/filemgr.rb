@@ -83,10 +83,7 @@ module MCollective
       def remove
         file = get_filename
 
-       unless File.exists?(file) || File.symlink?(file)
-          Log.debug("Asked to remove file '#{file}', but it does not exist")
-          reply.fail! "Could not remove file '#{file}' - it is not present"
-        else
+        if File.exists?(file) || File.symlink?(file)
           begin
             FileUtils.rm(file)
             Log.debug("Removed file '#{file}'")
@@ -95,6 +92,9 @@ module MCollective
             Log.warn("Could not remove file '#{file}': #{e.class}: #{e}")
             reply.fail! "Could not remove file '#{file}': #{e.class}: #{e}"
           end
+        else
+          Log.debug("Asked to remove file '#{file}', but it does not exist")
+          reply.fail! "Could not remove file '#{file}' - it is not present"
         end
       end
 
