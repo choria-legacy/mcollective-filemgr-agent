@@ -1,0 +1,68 @@
+# VERSION is subbed out during rake srpm process
+%global realversion <%= @version %>
+%global rpmversion <%= @rpmversion %>
+
+Summary:   File Manager
+Name:      mcollective-filemgr
+Version:   %{rpmversion}
+Release:   <%= @rpmrelease -%>%{?dist}
+Vendor:    %{?_host_vendor}
+License:   ASL 2.0
+URL:       https://github.com/puppetlabs/mcollective-filemgr-agent
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch: noarch
+Group:     System Tools
+Source0:   mcollective-filemgr-%{realversion}.tar.gz
+
+%description
+File Manager
+
+%prep
+%setup -q  -n %{name}-%{realversion}
+
+%build
+
+%install
+rm -rf %{buildroot}
+%{__install} -d -m0755 %{buildroot}%{_libexecdir}/mcollective/mcollective
+cp -a agent application %{buildroot}%{_libexecdir}/mcollective/mcollective
+
+%clean
+rm -rf %{buildroot}
+
+%package agent
+Requires: mcollective-filemgr-common = %{version}-%{release}
+Group: System Tools
+Summary:   File Manager
+
+%package client
+Requires: mcollective-filemgr-common = %{version}-%{release}
+Group: System Tools
+Summary:   File Manager
+
+%package common
+Requires: mcollective-common >= 2.2.1
+Group: System Tools
+Summary:   File Manager
+
+%description agent
+File Manager
+
+%description client
+File Manager
+
+%description common
+File Manager
+
+%files agent
+%{_libexecdir}/mcollective/mcollective/agent/*.rb
+
+%files client
+%{_libexecdir}/mcollective/mcollective/application/*.rb
+
+%files common
+%{_libexecdir}/mcollective/mcollective/agent/*.ddl
+
+%changelog
+* <%= Time.now.strftime("%a %b %d %Y") %> Puppet Labs Release <info@puppetlabs.com> -  <%= @rpmversion %>-<%= @rpmrelease %>
+- Build for <%= @version %>
