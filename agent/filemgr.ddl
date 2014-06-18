@@ -2,7 +2,7 @@ metadata    :name        => "filemgr",
             :description => "File Manager",
             :author      => "Mike Pountney <mike.pountney@gmail.com>",
             :license     => "ASL 2.0",
-            :version     => "1.0.1",
+            :version     => "1.0.2",
             :url         => "http://www.puppetlabs.com/mcollective",
             :timeout     => 5
 
