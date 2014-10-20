@@ -15,7 +15,7 @@ action "touch", :description => "Creates an empty file or touch it's timestamp" 
           :type        => :string,
           :validation  => '^.+$',
           :optional    => true,
-          :maxlength    => 256
+          :maxlength   => 256
 end
 
 action "remove", :description => "Removes a file" do
@@ -25,7 +25,7 @@ action "remove", :description => "Removes a file" do
           :type        => :string,
           :validation  => '^.+$',
           :optional    => true,
-          :maxlength    => 256
+          :maxlength   => 256
 end
 
 action "status", :description => "Basic information about a file" do
@@ -37,7 +37,13 @@ action "status", :description => "Basic information about a file" do
           :type        => :string,
           :validation  => '^.+$',
           :optional    => true,
-          :maxlength    => 256
+          :maxlength   => 256
+
+    input :dirlist,
+          :prompt      => "List directory contents?",
+          :description => "If file is a directory, show a contents listing?",
+          :type        => :boolean,
+          :optional    => true
 
     output :name,
            :description => "File name",
@@ -98,4 +104,8 @@ action "status", :description => "Basic information about a file" do
     output :type,
            :description => "File type",
            :display_as => "Type"
+
+    output :dir_listing,
+           :description => "Directory Listing",
+           :display_as => "Directory Listing"
 end

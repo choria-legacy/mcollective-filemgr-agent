@@ -74,6 +74,14 @@ module MCollective
           reply[:type] = "socket" if stat.socket?
           reply[:type] = "chardev" if stat.chardev?
           reply[:type] = "blockdev" if stat.blockdev?
+
+          if File.directory?(file) && request[:dirlist]
+            dir_filelist = Dir.entries(file)
+            # remove superfluous . and .. entries
+            dir_filelist -= [".",".."]
+            reply[:dir_listing] = dir_filelist
+          end
+
         else
           Log.debug("Asked for status of '#{file}' - it is not present")
           reply.fail! "#{file} does not exist"
