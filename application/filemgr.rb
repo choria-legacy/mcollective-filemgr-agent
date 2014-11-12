@@ -1,6 +1,6 @@
 class MCollective::Application::Filemgr<MCollective::Application
   description "Generic File Manager Client"
-  usage "Usage: mco filemgr [--file FILE] [touch|remove|status|write]"
+  usage "Usage: mco filemgr [--file FILE] [--content CONTENT] [--force] [touch|remove|status|write]"
 
   option :file,
          :description    => "File to manage",
