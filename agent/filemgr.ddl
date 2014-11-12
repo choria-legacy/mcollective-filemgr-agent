@@ -28,6 +28,30 @@ action "remove", :description => "Removes a file" do
           :maxlength   => 256
 end
 
+action "write", :description => "Writes content to a file, if file exists requires --force to overwrite file" do
+    input :file,
+          :prompt      => "File",
+          :description => "File to write",
+          :type        => :string,
+          :validation  => '^.+$',
+          :optional    => true,
+          :maxlength   => 256
+
+    input :content,
+          :prompt      => "Content",
+          :description => "Content to write",
+          :type        => :string,
+          :validation  => '^.+$',
+          :optional    => true,
+          :maxlength   => 256
+
+    input :force,
+          :prompt      => "Force write if file exists",
+          :description => "If file exists, overwrite contents?",
+          :type        => :boolean,
+          :optional    => true
+end
+
 action "status", :description => "Basic information about a file" do
     display :always
 
