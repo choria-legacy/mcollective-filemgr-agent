@@ -2,6 +2,11 @@
 
 Change history for mcollective-filemgr.
 
+## 1.1.0
+
+* Added dirlist argument to 'status' action allowing for directory listings to
+  be requested. https://github.com/puppetlabs/mcollective-filemgr-agent/pull/7
+
 ## 1.0.2
 
 Released 2014-06-18
