@@ -24,8 +24,22 @@ module MCollective
         status
       end
 
+      # Write content to a file, content is limited to 256 char
+      # requires a force option to overwrite an existing file
+      action "write" do
+        write
+      end
+
       def get_filename
         request[:file] || config.pluginconf["filemgr.touch_file"] || "/var/run/mcollective.plugin.filemgr.touch"
+      end
+
+      def get_content
+        request[:content] || "" # default to empty file
+      end
+
+      def get_force
+        request[:force] || false # default to false
       end
 
       def status
@@ -115,6 +129,30 @@ module MCollective
         rescue Exception => e
           Log.warn("Could not touch file '#{file}': #{e.class}: #{e}")
           reply.fail! "Could not touch file '#{file}': #{e.class}: #{e}"
+        end
+      end
+
+      def write
+        file    = get_filename
+        content = get_content
+        force   = get_force
+
+        begin
+          if File.file?(file) and force then
+            File::open(file,'w') do |f|
+              f << content
+            end
+            Log.debug("Wrote file '#{file}'")
+          elsif File.file?(file) and ! force then
+            Log.debug("'#{file}' exists, use force to overwrite")
+          elsif ! File.exists?(file) then
+            File::open(file,'w') do |f|
+              f << content
+            end
+          end
+        rescue Exception => e
+          Log.warn("Could not create file '#{file}': #{e.class}: #{e}")
+          reply.fail! "Could not create file '#{file}': #{e.class}: #{e}"
         end
       end
     end

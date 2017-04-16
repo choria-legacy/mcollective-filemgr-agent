@@ -1,6 +1,6 @@
 class MCollective::Application::Filemgr<MCollective::Application
   description "Generic File Manager Client"
-  usage "Usage: mco filemgr [--file FILE] [touch|remove|status]"
+  usage "Usage: mco filemgr [--file FILE] [--content CONTENT] [--force] [touch|remove|status|write]"
 
   option :file,
          :description    => "File to manage",
@@ -10,6 +10,16 @@ class MCollective::Application::Filemgr<MCollective::Application
   option :details,
          :description    => "Show full file details",
          :arguments      => ["--details", "-d"],
+         :type           => :bool
+
+  option :content,
+         :description    => "Content to use for file creation",
+         :arguments      => ["--content", "-c"],
+         :type           => :string
+
+  option :force,
+         :description    => "Force file write, if file exists already",
+         :arguments      => ["--force", "-f"],
          :type           => :bool
 
   def post_option_parser(configuration)
@@ -39,8 +49,15 @@ class MCollective::Application::Filemgr<MCollective::Application
         end
       end
 
+    when "write"
+      if configuration[:force]
+        printrpc mc.write(:file => configuration[:file], :content => configuration[:content], :force => true)
+      else
+        printrpc mc.write(:file => configuration[:file], :content => configuration[:content])
+      end
+
     else
-      puts "Valid commands are 'touch', 'status', and 'remove'"
+      puts "Valid commands are 'touch', 'status', 'remove' and 'write'"
       exit 1
     end
 
